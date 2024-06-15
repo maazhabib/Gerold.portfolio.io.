@@ -120,14 +120,14 @@ const portfolioData = [
                        slightly believable.`
         }
     }
+    // Add more portfolio items as needed
 ];
 
-$(document).ready(function() {
-    const portfolioContainer = $('.portfolio-box');
-    const modalContainer = $('body');
+function generatePortfolioItems() {
+    const portfolioContainer = document.getElementById('portfolioContainer');
 
     portfolioData.forEach((item, index) => {
-        const portfolioItem = `
+        const itemHTML = `
             <div class="portfolio-item ${item.category}">
                 <div class="image-box">
                     <img src="${item.imageSrc}" alt="${item.title}">
@@ -141,8 +141,9 @@ $(document).ready(function() {
                 </div>
             </div>
         `;
-        portfolioContainer.append(portfolioItem);
+        portfolioContainer.innerHTML += itemHTML;
 
+        // Append modal content for each item (if needed)
         const modalContent = `
             <div id="portfolio-wrapper-${index}" class="popup_content_area zoom-anim-dialog mfp-hide">
                 <div class="popup_modal_img">
@@ -155,7 +156,7 @@ $(document).ready(function() {
                             <div class="desc">
                                 <p>${item.modalContent.description}</p>
                             </div>
-                            <a href="#" class="btn tj-btn-primary">live preview <i class="fal fa-arrow-right"></i></a>
+                            <a href="#" class="btn tj-btn-primary">Live Preview <i class="fal fa-arrow-right"></i></a>
                         </div>
                         <div class="portfolio_info_items">
                             <div class="info_item">
@@ -192,7 +193,7 @@ $(document).ready(function() {
                     <div class="portfolio_story_approach">
                         <div class="portfolio_story">
                             <div class="story_title">
-                                <h4 class="title">The story</h4>
+                                <h4 class="title">The Story</h4>
                             </div>
                             <div class="story_content">
                                 <p>${item.modalContent.story}</p>
@@ -200,62 +201,29 @@ $(document).ready(function() {
                         </div>
                         <div class="portfolio_approach">
                             <div class="approach_title">
-                                <h4 class="title">OUR APPROACH</h4>
+                                <h4 class="title">Our Approach</h4>
                             </div>
                             <div class="approach_content">
                                 <p>${item.modalContent.approach}</p>
                             </div>
                         </div>
                     </div>
-                    <div class="portfolio_navigation">
-<!--                        <div class="navigation_item prev-project">-->
-<!--                            <a href="#" class="project">-->
-<!--                                <i class="fal fa-arrow-left"></i>-->
-<!--                                <div class="nav_project">-->
-<!--                                    <div class="label">Previous Project</div>-->
-<!--                                    <h3 class="title">Sebastian</h3>-->
-<!--                                </div>-->
-<!--                            </a>-->
-<!--                        </div>-->
-                        <div class="navigation_item next-project">
-<!--                            <a href="#" class="project">-->
-<!--                                <div class="nav_project">-->
-<!--                                    <div class="label">Next Project</div>-->
-<!--                                    <h3 class="title">Qwillo</h3>-->
-<!--                                </div>-->
-<!--                                <i class="fal fa-arrow-right"></i>-->
-<!--                            </a>-->
-                        </div>
-                    </div>
                 </div>
             </div>
         `;
-        modalContainer.append(modalContent);
+
+        // Append modal content to the body
+        document.body.insertAdjacentHTML('beforeend', modalContent);
     });
 
-    // Initialize animations
-    new WOW().init();
-
-    // Initialize Isotope for filtering
-    var $portfolioBox = $('.portfolio-box').isotope({
-        itemSelector: '.portfolio-item',
-        layoutMode: 'fitRows',
-        percentPosition: true,
-        masonry: {
-            columnWidth: '.portfolio-sizer',
-            gutter: '.gutter-sizer'
-        }
-    });
-
-    // Filter items on button click
-    $('.filter-button-group').on('click', 'button', function() {
-        var filterValue = $(this).attr('data-filter');
-        $portfolioBox.isotope({ filter: filterValue });
-    });
-
-    // Initialize Magnific Popup for modal popups
-    $('.portfolio-link').magnificPopup({
+    // Initialize magnificPopup for modal popups
+    $('.modal-popup').magnificPopup({
         type: 'inline',
-        midClick: true
+        preloader: false,
+        focus: '#username',
+        modal: true
     });
-});
+}
+
+// Call the function to generate portfolio items when the page loads
+document.addEventListener('DOMContentLoaded', generatePortfolioItems);
